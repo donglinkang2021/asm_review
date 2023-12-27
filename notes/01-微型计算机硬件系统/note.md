@@ -1,5 +1,7 @@
 # 微型计算机硬件系统
 
+## 内存及存储器访问
+
 | 字节 | 字 | 双字 | 四字 |
 | --- | --- | --- | --- |
 | 8bit | 16bit | 32bit | 64bit |
@@ -23,3 +25,61 @@
 - 取一个字节 `1aH`
 - 取一个字 `2d1aH`
 - 取一个双字 `143e2d1aH`
+
+-------------
+
+了解掌握
+
+## 微处理器性能指标
+
+1. 主频、外频、倍频
+   - **主频**：也叫时钟频率，表示在**CPU**内数字脉冲信号振荡的速度。
+   - **外频**：**CPU与主板**之间同步运行的速度。目前外频有66 MHz、100 MHz和133 MHz。
+   - **倍频**：**CPU和系统总线**之间工作频率相差的倍数，当外频不变时，倍频越高，CPU主频也就越高。倍频可使系统总线工作在相对较低的频率上，而CPU速度可以通过倍频来无限提升。
+   - 计算公式为：<font color=red>主频 = 外频 * 倍频</font>
+
+
+<details>
+<summary>
+例题 1‑1 假定购买了一颗CPU，它的工作频率是2.4GHz，倍频系数设定为18，请问外频是多少？
+</summary>
+解答：2.4GHz/18 ≈ 133MHz ，因此在设置主板跳线时应将主板频率置为133MHz。
+
+> 这里的 1GHz = 1000MHz
+</details>
+
+2. 前端总线 Front Side Bus（FSB）
+   - **前端总线**：也叫系统总线，是CPU与主板之间的数据传输通道，它的宽度决定了CPU与主板之间的数据传输速度。
+   - 前端总线的**数据带宽** = （总线频率×数据位宽）/ 8
+     - 如果有**双**通道，那么数据带宽就是上面的两倍
+     - 如果有每个时钟的**传输次数**，那么数据带宽就是上面的乘以传输次数
+     - 如果有**传输率**，那么数据带宽就是上面的乘以传输率
+
+<!-- 下面为英文graph -->
+
+```mermaid
+graph LR
+    cache[L2 Cache] -->|Back Side Bus| cpu[Pentium II]
+    cpu -->|Front Side Bus| hostBridge[Host Bridge]
+    hostBridge --> memory[Memory]
+```
+
+
+<details> 
+<summary>例1-2 Intel Pentium 4处理器中采用了四倍传输率的前端总线，当主频为3.2GHz，外频为200MHz时，试问倍频是多少？已知数据位宽为64位，则前端总线频率为多少？前端总线的数据传输性能峰值为多少？</summary>
+
+- 倍频 = 3.2GHz/200MHz = 16
+- FSB频率 = 200MHz×4 = 800MHz
+- 峰值传输性能 = 200M×4×64÷8 = 6.4G/s 
+</details>
+
+
+<details> 
+<summary>2条DDR 400内存条，工作在200MHz频率下，每个时钟可以传送2次64位数据，求单/双通道带宽</summary>
+解析：
+
+2条DDR 400内存条，工作在200MHz频率下，每个时钟可以传送<font color=green>2</font>次<font color=red>64</font>位数据，则单/双通道带宽为
+
+- 单通道：200MHz×<font color=green>2</font>×<font color=red>64</font>÷8 = 3.2G/s
+- <font color=purple>双</font>通道：200MHz×<font color=green>2</font>×<font color=red>64</font>÷8×<font color=purple>2</font> = 6.4G/s 
+</details>

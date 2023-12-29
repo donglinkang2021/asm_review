@@ -25,6 +25,114 @@
 
 ### 状态标志寄存器
 
+- 8086~80286使用16位状态标志寄存器FLAGS
+- 80386以及更高型号的微处理器使用32位状态标志寄存器EFLAGS
+- 64位微处理器使用64位状态标志寄存器RFLAGS
+- 我们通常学习的是FLAGS寄存器
+
+<table>
+  <tr>
+    <th colspan="1" align=center> Index </th>
+    <th colspan="1" align=center>
+          15 
+    </th>
+    <th colspan="1" align=center>
+          14 
+    </th>
+    <th colspan="1" align=center>
+          13 
+    </th>
+    <th colspan="1" align=center>
+          12 
+    </th>
+    <th colspan="1" align=center>
+          11 
+    </th>
+    <th colspan="1" align=center>
+          10 
+    </th>
+    <th colspan="1" align=center>
+          9 
+    </th>
+    <th colspan="1" align=center>
+          8 
+    </th>
+    <th colspan="1" align=center>
+          7 
+    </th>
+    <th colspan="1" align=center>
+          6 
+    </th>
+    <th colspan="1" align=center>
+          5 
+    </th>
+    <th colspan="1" align=center>
+          4 
+    </th>
+    <th colspan="1" align=center>
+          3 
+    </th>
+    <th colspan="1" align=center>
+          2 
+    </th>
+    <th colspan="1" align=center>
+          1 
+    </th>
+    <th colspan="1" align=center>
+          0 
+    </th>
+  </tr>
+  <tr>
+    <th colspan="1" align=center>
+        FLAGS (16bits)
+    </th>
+    <td colspan="1" align=center>
+        - 
+    </td>
+    <td colspan="1" align=center>
+        NT 
+    </td>
+    <td colspan="2" align=center>
+        IOPL 
+    </td>
+    <td colspan="1" align=center>
+        OF 
+    </td>
+    <td colspan="1" align=center>
+        DF 
+    </td>
+    <td colspan="1" align=center>
+        IF 
+    </td>
+    <td colspan="1" align=center>
+        TF 
+    </td>
+    <td colspan="1" align=center>
+        SF 
+    </td>
+    <td colspan="1" align=center>
+        ZF 
+    </td>
+    <td colspan="1" align=center>
+        - 
+    </td>
+    <td colspan="1" align=center>
+        AF 
+    </td>
+    <td colspan="1" align=center>
+        - 
+    </td>
+    <td colspan="1" align=center>
+        PF
+    </td>
+    <td colspan="1" align=center>
+        - 
+    </td>
+    <td colspan="1" align=center>
+        CF 
+    </td>
+  </tr>
+</table>
 
 | 标志位 | 英文全称 | 简单说明 | 作用 |
 | --- | --- | --- | --- |

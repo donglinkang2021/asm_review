@@ -105,6 +105,7 @@ mindmap
     - `LEA SI,TAB`
     - `LEA BX,TAB [SI]`
     - `LEA DI,ASCTAB [BX][SI]`
+- `MOV AX,OFFSET MEM` 等效于 `LEA AX,MEM`，都是将MEM的偏移量（有效地址、偏移地址）送到AX中；
 
 ### 标志传送指令
 

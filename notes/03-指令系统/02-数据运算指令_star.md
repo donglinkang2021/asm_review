@@ -132,3 +132,91 @@ CBW
 - 若除数为0或商超出操作数所表示的范围（例如字节型除法的商超出8位）会产生除法错中断,此时系统直接进入<font color=red>0号中断处理程序</font>
 
 ### 位运算指令
+
+<details>
+<summary>
+要学习的位运算指令
+</summary>
+
+```mermaid
+mindmap
+  root((位运算指令))
+    逻辑运算指令
+        NOT dst
+        AND dst,src
+        TEST dst,src
+        OR dst,src
+        XOR dst,src
+    位测试指令
+        BT dst,src
+        BTS dst,src
+        BTR dst,src
+        BTC dst,src
+    基本移位指令
+        SHL/SAL dst,cnt
+        SHR dst,cnt
+        SAR dst,cnt
+    循环移位指令
+        ROL dst,cnt
+        ROR dst,cnt
+        RCL dst,cnt
+        RCR dst,cnt
+```
+</details>
+
+#### 逻辑运算指令
+
+逻辑运算可以是8位、16位、32位,其寻址方式与MOV指令的限制相同
+
+| 指令 | 中文名称 | 格式 | 功能描述 | 标志位影响 |
+| :---: | :---: | :---: | :---: | :---: |
+| NOT | 逻辑非 | `NOT dst` | `(DST) = ~(DST)` 按位取反| 不影响|
+| AND | 逻辑与 | `AND dst,src` | `(DST) = (DST) & (SRC)` 按位与| `CF`和`OF`清0，影响SF、ZF、PF，AF不确定|
+| TEST | 逻辑测试 | `TEST dst,src` | `(DST) & (SRC)` **不改变**两个操作数的原值| 同AND|
+| OR | 逻辑或 | `OR dst,src` | `(DST) = (DST) \| (SRC)` 按位或| 同AND|
+| XOR | 逻辑异或 | `XOR dst,src` | `(DST) = (DST) ^ (SRC)` 按位异或| 同AND|
+
+#### 位测试指令
+
+- bit test
+- bit test and set
+- bit test and reset
+- bit test and complement
+
+| 指令 | 中文名称 | 格式 | 功能描述 | 标志位影响 |
+| :---: | :---: | :---: | :---: | :---: |
+| BT | 位测试指令 | `BT dst,src` | 测试`dst`的第`src`位是否为1| `CF`被设置为`dst`的第`src`位的值，其它标志位不定|
+| BTS | 位测试并置位指令 | `BTS dst,src` | 测试`dst`的第`src`位是否为1，若为1则不改变，若为0则置1| 同上|
+| BTR | 位测试并复位指令 | `BTR dst,src` | 测试`dst`的第`src`位是否为1，若为1则置0，若为0则不改变| 同上|
+| BTC | 位测试并取反指令 | `BTC dst,src` | 测试`dst`的第`src`位是否为1，若为1则置0，若为0则置1| 同上|
+
+#### 基本移位指令
+
+| 指令 | 中文名称 | 格式 | 功能描述 | 标志位影响 |
+| :---: | :---: | :---: | :---: | :---: |
+| SHL/SAL | 逻辑/算术左移指令 | `SHL/SAL dst,cnt` | `(DST) = (DST) << (CNT)` | `CF`中总是最后移出的一位，ZF、SF、PF按结果设置,当CNT＝ 1时,移位使符号位变化置1 则OF为1,否则清0 |
+| SHR | 逻辑右移指令 | `SHR dst,cnt` | `(DST) = (DST) >> (CNT)`，高位补0 | 同上|
+| SAR | 算术右移指令 | `SAR dst,cnt` | `(DST) = (DST) >> (CNT)`，高位补符号位 | 同上|
+
+#### 循环移位指令
+
+| 指令 | 中文名称 | 格式 | 功能描述 | 标志位影响 |
+| :---: | :---: | :---: | :---: | :---: |
+| ROL | 循环左移指令 | `ROL dst,cnt` | `(DST) = (DST) << (CNT)`，低位移出的位放入CF | `CF`中总是最后移进的一位，ZF、SF、PF按结果设置,当CNT＝ 1时,移位使符号位变化置1 则OF为1,否则清0 |
+| ROR | 循环右移指令 | `ROR dst,cnt` | `(DST) = (DST) >> (CNT)`，高位移出的位放入CF | 同上|
+| RCL | 带进位循环左移指令 | `RCL dst,cnt` | `(DST) = (DST) << (CNT)`，低位移出的位放入CF，CF移入高位 | 同上|
+| RCR | 带进位循环右移指令 | `RCR dst,cnt` | `(DST) = (DST) >> (CNT)`，高位移出的位放入CF，CF移入低位 | 同上|
+
+<details>
+<summary>例子：把CX:BX:AX一组寄存器中的48位数据左移一个二进制位
+</summary>
+
+```asm
+SHL AX,1
+RCL BX,1
+RCL CX,1
+```
+
+在没有溢出的情况下，以上程序实现了2×( CX:BX:AX)→CX:BX:AX的功能
+
+</details>

@@ -72,7 +72,7 @@ XCHG AL, AH     ; 交换高低字节
 
 <table>
 <tr>
-<td colspan="1" align=center>
+<td colspan="1">
 <details>
 <summary>图8-36 8254用于分频</summary>
 
@@ -93,7 +93,7 @@ MOV AL, 03H         ; 计数器0初值高字节
 OUT DX, AL          ; 计数器0初值高字节写入计数器0端口
 ```
 </details>    
-<td colspan="1" align=center>
+<td colspan="1">
 <details>
 <summary>图8-37 8254计数器的级联</summary>
 

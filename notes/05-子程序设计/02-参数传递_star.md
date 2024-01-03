@@ -77,6 +77,33 @@ Windows API采用的调用规则就是stdcall方式。
 将`subproc()`设置为使用`__stdcall`调用规则：
 `int _stdcall subproc(int a, int b)`
 
+```asm
+.386
+.model flat,stdcall
+includelib msvcrt.lib
+printf PROTO C:ptr sbyte,:VARARG;
+.data
+sgMsgOut byte "%d-%d=%d",0ah,0
+.code
+subproc1 proc C a:dword, b:dword
+    mov eax, a
+    sub eax, b
+    ret
+subproc1 endp
+subproc2 proc stdcall a:dword, b:dword
+    mov eax, a
+    sub eax, b
+    ret
+subproc2 endp
+start:
+    invoke subproc1, 20, 10
+    invoke printf, offset sgMsgOut, 20, 10, eax
+    invoke subproc2, 200, 100
+    invoke printf, offset sgMsgOut, 200, 100, eax
+    ret
+end start
+```
+
 </details>
 
 <details>

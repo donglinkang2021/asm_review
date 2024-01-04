@@ -168,7 +168,7 @@ D．CS:[IP]
             E = 1
         </td>
         <td colspan="1" align=center>
-            C (一致位 0：非一致 1：一致)
+            C (一致位: 0：非一致 1：一致)
         </td>
         <td colspan="1" align=center>
             R (可读位)
@@ -243,4 +243,62 @@ D．CS:[IP]
 
 > PDBR:页目录基址寄存器存放页目录表的基址
 
-线性地址转换位物理地址的过程和操作系统中的差不多
+页目录中存放页表描述符，页表中存放页描述符，二者都叫做页表项，都是32位。
+
+<details>
+<summary>页表项格式</summary>
+
+![页表项格式](页表项格式.png)
+
+- 页表描述符提供了页面保护位
+- 页目录、页表和物理页的基地址的低12位全部为0，定位在页的边界上。
+- 页表项的低12位提供保护功能和统计信息。U/S位、R/W位、P位实现页保护机制，p32。
+- 一个物理页存在两级保护,页表描述符和页描述符属性。当二者不一致的时候取严格属性。
+- 每次内存操作都需要将线性地址转换为物理地址，转换过程中需要访问页目录表和页表来取得页表描述符和页描述符。为了提高转换效率，CPU内部设置了片内转换检测缓冲器**TLB（Translation Lookaside Buffer）**，其中保存了32个页描述符，它们都是最近使用过的
+
+</details>
+
+### 地址变换
+
+运行分页在LDT上，实现DS:[EBX]虚拟地址生成物理地址，参照下图。
+
+<table>
+<tr>
+<td colspan="1" align=center>
+<details>
+<summary>
+虚拟地址生成物理地址总流程
+</summary>
+
+```mermaid
+flowchart TD
+    vituarl_address[虚拟地址 *16位段选择符: 32位偏移量*] --> split_section[分段部件]
+    split_section --> linear_address(线性地址 *32位* = 段基址 + 偏移量)
+    linear_address --> if_split_page{允许分页?}
+    if_split_page -->|允许| split_page[分页部件]
+    split_page --> physical_address1[物理地址 = 页基址 + 偏移量]
+    if_split_page -->|禁止| physical_address2[物理地址 = 线性地址]
+
+style split_section fill:#FFF,stroke-dasharray: 2,2
+style split_page fill:#FFF,stroke-dasharray: 2,2
+```
+
+</details>
+</td>
+<td colspan="1" align=center>
+<details>
+<summary>线性地址生成物理地址</summary>
+
+![线性地址生成物理地址](线性地址生成物理地址.png)
+</details>
+</td>
+</tr>    
+</table>
+
+
+
+1. 首先根据DS中的索引找到LDT中的段描述符
+2. 根据段描述符中的基地址和[EBX]偏移地址生成线性地址
+3. 根据线性地址中的页目录索引在页目录中找到页表描述符
+   - 根据页表描述符中的页表基地址和线性地址中的页表索引找到页描述符
+   - 根据页描述符中的基地址和线性地址中的页内偏移生成物理地址

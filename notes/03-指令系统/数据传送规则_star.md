@@ -46,7 +46,7 @@ graph LR
 | (7) | `MOV 6, CX` | 目标操作数不能是立即数 |
 | (8) | `MOV AX, [SI][DI]` | 源操作数寻址方式错 |
 | (9) | `MOV CS, AX` | 目标操作数不能是代码段寄存器CS |
-| (10) | `MOV BX, OFFSET VAR[SI]` | OFFSET 后只能跟变量或标号名 |
+| (10) | `MOV BX, OFFSET VAR[SI]` | OFFSET 后只能跟**变量或标号名** |
 
 </details>
 
